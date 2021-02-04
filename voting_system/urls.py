@@ -16,7 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from voting_systemapp import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("",views.home)
+    path("",views.home),
+    path("registercandidate/",views.registercandidate),
+    path("allcandidates/",views.allcandidates),
+    path("registervoter/",views.registervoter)
 ]

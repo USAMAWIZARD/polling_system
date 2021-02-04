@@ -1,0 +1,98 @@
+<html>
+<head>
+    {% load socketio_tags %}
+    {% socketio %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.bundle.js"></script>
+<link rel="stylesheet"src="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<script src="/static/lab.js"></script>
+
+</head>
+<body>
+<canvas id="chart"></canvas>
+<div style="font-family: 'FontAwesome'; opacity: 0; height: 0; width: 0">.</div>
+
+{% for key, value in candidates.items %}
+<div class="card" style="width:400px">
+  <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+  <div class="card-body">
+    <h4 class="card-title">Name: {{key}}</h4>
+    <p class="card-text">party name: {{ value.partyname }}</p>
+    <p class="card-text">age: {{ value.age }}</p>
+    <a class="btn btn-primary"> votes: {{value.votes}}</a>
+  </div>
+</div>
+{% endfor %}
+
+{% autoescape off %}
+<script type="text/javascript">
+    var partydata = {{candidates}}
+    var canname =Object.keys(partydata)
+    var partyvotes=[]
+    var partyname=[]
+    Object.keys(partydata).forEach(element=>{
+      partyvotes.push(partydata[element]["votes"])
+      partyname.push(partydata[element]["partyname"])    
+    })
+    console.log(partyvotes)
+</script>
+{% endautoescape %}
+
+<script>
+
+
+
+window.onload = function() {
+  new Chart("chart", {
+    type: "bar",
+    data: {
+      labels: canname,
+      datasets: [{
+        data: partyvotes,
+        icons: partyname,
+      }]
+    },
+    options: {
+      animation: false,
+      legend: false,
+      tooltips: false,
+      layout: {
+        padding: 24
+      },
+      elements: {
+        rectangle: {
+          backgroundColor: "#cc55aa"
+        }
+      },
+      plugins: {
+        datalabels: {
+          align: 'end',
+          anchor: 'end',
+          color: "#cc55aa",
+          font: {
+            family: 'FontAwesome',
+            size: 20
+          },
+          formatter: function(value, context) {
+            return context.dataset.icons[context.dataIndex];
+          }
+        }
+      }
+    }
+  });
+}
+
+var socket = new io.Socket();
+socket.connect();
+socket.send("hi i am client")
+socket.on('connect', function() {
+  console.log("connnected")
+});
+</script>
+</body>
+
+</html>
