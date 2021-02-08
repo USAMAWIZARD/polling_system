@@ -16,6 +16,18 @@
 <canvas id="chart"></canvas>
 <div style="font-family: 'FontAwesome'; opacity: 0; height: 0; width: 0">.</div>
 
+<script>
+ws = new WebSocket("ws://localhost:8000")
+var email = "{{emailid}}"
+console.log(email)
+function addvote(tovote){
+  //soketemit email tovote
+  ws.send(JSON.stringify({"addvote":{"email":email,"tovote":tovote.id}}))
+  console.log( tovote.id)
+
+}
+</script>
+
 {% for key, value in candidates.items %}
 <div class="card" style="width:400px">
   <img class="card-img-top" src="img_avatar1.png" alt="Card image">
@@ -23,13 +35,14 @@
     <h4 class="card-title">Name: {{key}}</h4>
     <p class="card-text">party name: {{ value.partyname }}</p>
     <p class="card-text">age: {{ value.age }}</p>
-    <a class="btn btn-primary"> votes: {{value.votes}}</a>
+    <a class="btn btn-primary" id={{key}}  onclick="addvote(this)"> vote: {{value.votes}}</a>
   </div>
 </div>
 {% endfor %}
 
 {% autoescape off %}
 <script type="text/javascript">
+ 
     var partydata = {{candidates}}
     var canname =Object.keys(partydata)
     var partyvotes=[]
@@ -43,8 +56,6 @@
 {% endautoescape %}
 
 <script>
-
-
 
 window.onload = function() {
   new Chart("chart", {
@@ -86,12 +97,11 @@ window.onload = function() {
   });
 }
 
-var socket = new io.Socket();
-socket.connect();
-socket.send("hi i am client")
-socket.on('connect', function() {
-  console.log("connnected")
-});
+
+
+ws.onmessage()=event=>{
+console.log.log(event.data)
+}
 </script>
 </body>
 

@@ -14,14 +14,3 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'voting_system.settings')
 
 application = get_wsgi_application()
-
-
-from django_socketio.views import sio
-import socketio
-
-application = socketio.WSGIApp(sio, application)
-
-import eventlet
-import eventlet.wsgi
-
-eventlet.wsgi.server(eventlet.listen(('', 8000)), application)
