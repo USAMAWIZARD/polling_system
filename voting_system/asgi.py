@@ -15,12 +15,5 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'voting_system.settings')
 
 django_application = get_asgi_application()
 
-async def application(scope, receive, send):
-    if scope['type'] == 'http':
-        # Let Django handle HTTP requests
-        await django_application(scope,receive, send)
-    elif scope['type'] == 'websocket':
-        await views.websocket_applciation(scope, receive, send)
-        # We'll handle Websocket connections here
-    else:
-        raise NotImplementedError(f"Unknown scope type {scope['type']}")
+
+

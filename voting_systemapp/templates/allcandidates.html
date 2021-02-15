@@ -1,7 +1,5 @@
 <html>
 <head>
-    {% load socketio_tags %}
-    {% socketio %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
@@ -17,7 +15,8 @@
 <div style="font-family: 'FontAwesome'; opacity: 0; height: 0; width: 0">.</div>
 
 <script>
-ws = new WebSocket("ws://localhost:8000")
+var ws =   new  WebSocket("ws://localhost:3000/")
+
 var email = "{{emailid}}"
 console.log(email)
 function addvote(tovote){
@@ -26,6 +25,8 @@ function addvote(tovote){
   console.log( tovote.id)
 
 }
+
+
 </script>
 
 {% for key, value in candidates.items %}
@@ -56,9 +57,9 @@ function addvote(tovote){
 {% endautoescape %}
 
 <script>
-
+var barchart
 window.onload = function() {
-  new Chart("chart", {
+  barchart=  new Chart("chart", {
     type: "bar",
     data: {
       labels: canname,
@@ -97,11 +98,14 @@ window.onload = function() {
   });
 }
 
-
-
-ws.onmessage()=event=>{
-console.log.log(event.data)
+ws.onmessage=event=>{
+console.log(event.data)
+partyvotes[canname.indexOf(event.data)]+=1
+console.log(partyvotes)
+document.getElementById(event.data).innerHTML=" vote: "+(parseInt(document.getElementById(event.data).innerHTML.slice(7))+1)
+barchart.update()
 }
+
 </script>
 </body>
 
