@@ -35,12 +35,6 @@ async def websocketrequest(websocket, path):
                 pass
                 # already voted
 
-
-
-
-
-
-
 asyncio.get_event_loop().run_until_complete(
 websockets.serve(websocketrequest, 'localhost', 3000))
 asyncio.get_event_loop().run_forever()

@@ -8,7 +8,7 @@
 <link rel="stylesheet"src="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <script src="/static/lab.js"></script>
-
+{% load static %}
 </head>
 <body>
 <canvas id="chart"></canvas>
@@ -29,17 +29,23 @@ function addvote(tovote){
 
 </script>
 
-{% for key, value in candidates.items %}
+
 <div class="card" style="width:400px">
-  <img class="card-img-top" src="img_avatar1.png" alt="Card image">
+
+
+  {% for key, value in candidates.items %}
+  <img class="card-img-top" src="\static\candidate.jpg" alt="Card image">
   <div class="card-body">
     <h4 class="card-title">Name: {{key}}</h4>
     <p class="card-text">party name: {{ value.partyname }}</p>
     <p class="card-text">age: {{ value.age }}</p>
     <a class="btn btn-primary" id={{key}}  onclick="addvote(this)"> vote: {{value.votes}}</a>
   </div>
+  {% endfor %}
+
+
 </div>
-{% endfor %}
+
 
 {% autoescape off %}
 <script type="text/javascript">
