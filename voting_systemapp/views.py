@@ -1,8 +1,6 @@
 from django.shortcuts import render, redirect
 import json
 import  json
-from pymongo import MongoClient
-import redis
 import asyncio
 
 voters = {}
@@ -17,14 +15,13 @@ def writeJSON(filename,data):
     with open(filename+'.json', 'w') as f:
         json.dump(data, f)
 
-conn = redis.StrictRedis(host="localhost", port=int(6379),decode_responses=True)
 
 def home(request):
     return render(request, 'index.html')
 
 def registervoter(request):
 
-    voters[request.POST["email"]]={"name":request.POST["username"],"gender":request.POST["gender"],"age":request.POST["age"],"voted":False}
+    voters[request.POST["email"]]={"name":request.POST["username"],"gender":request.POST["gender"],"age":request.POST["age"],"adharnumber":request.POST["adharno"],"pancardno":request.POST["pancardno"],"voterid":request.POST["voterid"],"voted":False}
     print(request.POST["email"])
     writeJSON("voter",voters)
     return render(request,"allcandidates.html",{"candidates":readJSON("candidatae"),"emailid":request.POST["email"]})

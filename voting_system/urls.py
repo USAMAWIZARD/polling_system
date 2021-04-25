@@ -22,5 +22,6 @@ urlpatterns = [
     path("",views.home),
     path("registercandidate/",views.registercandidate),
     path("allcandidates/",views.allcandidates),
+    path("pollsadmin/",views.allcandidates),
     path("registervoter/",views.registervoter)
 ]

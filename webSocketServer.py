@@ -7,6 +7,7 @@ connected =list()
 
 async def websocketrequest(websocket, path):
     eventdata=""
+
     if websocket not in connected: 
         connected.append(websocket) 
 
